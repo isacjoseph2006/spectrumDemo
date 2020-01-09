@@ -1,5 +1,5 @@
 //
-//  AppExtensions.swift
+//  Name.swift
 //  CompanyListing
 //
 //  Created by Isac Joseph on 09/01/20.
@@ -8,11 +8,13 @@
 
 import Foundation
 
-
-extension String
+struct Name :Codable
 {
-    var url :URL?
+    var first: String
+    var last: String
+    
+    var displayName: String
     {
-        return URL(string: self)
+        return first + last
     }
 }
