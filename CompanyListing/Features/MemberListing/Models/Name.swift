@@ -13,8 +13,11 @@ struct Name :Codable
     var first: String
     var last: String
     
+    /*
+    * Returns Displsy name
+    */
     var displayName: String
     {
-        return first + last
+        return first + " " + last
     }
 }

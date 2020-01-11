@@ -13,6 +13,7 @@ class CompanyListingViewController: UIViewController
 {
     @IBOutlet weak var tblCompanies: UITableView!
     @IBOutlet weak var loaderView: UIActivityIndicatorView!
+    @IBOutlet weak var btnNameSort: UIButton!
     
     var companyArray = [Company]()
     {
@@ -23,20 +24,19 @@ class CompanyListingViewController: UIViewController
     }
     
     var filteredCompanyArray = [Company]()
-    {
-        didSet
-        {
-            tblCompanies.reloadData()
-        }
-    }
+    var selectedSortOrder: SortOrder = .ascending
+    var searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         setUp()
+        setupSeachBar()
     }
     
-    
+    /*
+    * Intial setup
+    */
     func setUp()
     {
         title = "Companies"
@@ -53,11 +53,44 @@ class CompanyListingViewController: UIViewController
             self?.loaderView.isHidden = true
         }
         tblCompanies.tableFooterView = UIView()
+        btnNameSort.setTitle("SORT NAME BY: ASCENDING", for: .normal)
     }
     
+    /*
+    *  Setup search bar
+    */
+    func setupSeachBar()
+    {
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search by name"
+        searchController.hidesNavigationBarDuringPresentation = true
+        navigationItem.searchController = searchController
+        navigationItem.hidesSearchBarWhenScrolling = false
+    }
+    
+    /*
+    * Filters and display contents
+    */
     func filterAndDisplay()
     {
-        filteredCompanyArray = companyArray
+        guard let text = searchController.searchBar.text else { return }
+        if text.isEmpty
+        {
+           filteredCompanyArray = companyArray
+        }
+        else
+        {
+            filteredCompanyArray = companyArray.filter { (company: Company) -> Bool in
+                return company.company.lowercased().contains(text.lowercased())
+           }
+        }
+        let resultType = selectedSortOrder == .ascending ? ComparisonResult.orderedAscending : ComparisonResult.orderedDescending
+        filteredCompanyArray = filteredCompanyArray.sorted
+        {
+            return $0.company.localizedCaseInsensitiveCompare($1.company) == resultType
+        }
+        tblCompanies.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?)
@@ -67,9 +100,38 @@ class CompanyListingViewController: UIViewController
             destVc.members = company.members
         }
     }
+    
+    /*
+    * Select sort order
+    */
+    @IBAction func selectSortOrder(_ sender: Any)
+    {
+        let alert = UIAlertController(title: "Sort Order", message: "Select sort order for companies", preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Ascending", style: .default, handler:{ (UIAlertAction)in
+            self.btnNameSort.setTitle("SORT NAME BY: ASCENDING", for: .normal)
+            self.selectedSortOrder = .ascending
+            self.filterAndDisplay()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Descending", style: .default, handler:{ (UIAlertAction)in
+            self.btnNameSort.setTitle("SORT NAME BY: DESCENDING", for: .normal)
+            self.selectedSortOrder = .descending
+            self.filterAndDisplay()
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler:{ (UIAlertAction)in
+        }))
+
+        self.present(alert, animated: true, completion:
+        {
+            print("completion block")
+        })
+    }
 }
 
-
+/*
+* Tableview delegates
+*/
 extension CompanyListingViewController : UITableViewDelegate,UITableViewDataSource,UITableViewDataSourcePrefetching
 {
 
@@ -94,5 +156,17 @@ extension CompanyListingViewController : UITableViewDelegate,UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
     {
         performSegue(withIdentifier: Constants.Segues.toMembers, sender: filteredCompanyArray[indexPath.row])
+    }
+}
+
+/*
+* UISearchResults delegates
+*/
+extension CompanyListingViewController: UISearchResultsUpdating
+{
+    // MARK: - Search result update
+    func updateSearchResults(for searchController: UISearchController)
+    {
+        filterAndDisplay()
     }
 }

@@ -166,8 +166,6 @@
 			isa = PBXGroup;
 			children = (
 				4B5DCB1523C76C870022AC2D /* Network */,
-				4B5DCB0B23C769050022AC2D /* Constants.swift */,
-				4B5DCB0D23C769360022AC2D /* AppExtensions.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -177,6 +175,8 @@
 			children = (
 				4B5DCAE923C766C20022AC2D /* AppDelegate.swift */,
 				4B5DCAEB23C766C20022AC2D /* SceneDelegate.swift */,
+				4B5DCB0B23C769050022AC2D /* Constants.swift */,
+				4B5DCB0D23C769360022AC2D /* AppExtensions.swift */,
 			);
 			path = Others;
 			sourceTree = "<group>";

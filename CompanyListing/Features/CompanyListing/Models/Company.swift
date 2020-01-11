@@ -18,6 +18,9 @@ struct Company :Codable
     var about: String
     var members: [Member]
     
+    /*
+    * Favourites are written in userdefaults
+    */
     var isFavourite: Bool
     {
         set
@@ -31,6 +34,9 @@ struct Company :Codable
         }
     }
     
+    /*
+    * Following are written in userdefaults
+    */
     var isFollowing: Bool
     {
         set

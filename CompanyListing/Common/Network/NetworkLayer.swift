@@ -16,7 +16,9 @@ class NetworkLayer: NSObject
     
     private override init() {}
     
-    
+    /*
+     * Returns the array of company modals along with error message
+     */
     func getCompanies(completion: @escaping (_ companies: [Company], _ success: Bool, _ message: String) -> Void)
     {
         guard let url = Constants.Urls.homeUrl.url else

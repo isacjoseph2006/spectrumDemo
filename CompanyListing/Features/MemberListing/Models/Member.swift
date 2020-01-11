@@ -16,6 +16,9 @@ struct Member: Codable
     var email: String
     var phone: String
     
+    /*
+    * Favourites are written in userdefaults
+    */
     var isFavourite: Bool
     {
         set

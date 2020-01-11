@@ -17,7 +17,9 @@ class MemberCell: UITableViewCell
     
     var selectedMemeber: Member!
     
-    
+    /*
+     * Configures the cell
+     */
     func configureCell(member: Member)
     {
         selectedMemeber = member
@@ -27,12 +29,18 @@ class MemberCell: UITableViewCell
         btnFav.isSelected = selectedMemeber.isFavourite
     }
     
+    /*
+    * User clicked on fav button
+    */
     @IBAction func favClicked(_ sender: UIButton)
     {
         selectedMemeber.isFavourite = !sender.isSelected
         sender.isSelected = selectedMemeber.isFavourite
     }
     
+    /*
+    * User tries to click on email
+    */
     @IBAction func emailClicked(_ sender: Any)
     {
         if let url = "mailto:\(selectedMemeber.email)".url,UIApplication.shared.canOpenURL(url)
@@ -41,6 +49,9 @@ class MemberCell: UITableViewCell
         }
     }
     
+    /*
+    * User clicks on phoine number
+    */
     @IBAction func phoneClicked(_ sender: Any)
     {
         if let url = "tel://\(selectedMemeber.phone.replacingOccurrences(of: " ", with: ""))".url,UIApplication.shared.canOpenURL(url)
@@ -49,7 +60,9 @@ class MemberCell: UITableViewCell
         }
     }
     
-    
+    /*
+    * Resets the uielements on resuse
+    */
     override func prepareForReuse()
     {
         lblName.text = nil

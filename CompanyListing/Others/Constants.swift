@@ -8,6 +8,9 @@
 
 import Foundation
 
+/*
+ * Constants used in the app
+ */
 struct Constants
 {
     struct Urls
@@ -34,4 +37,13 @@ struct Constants
         static let memberFavPrefix = "memFav"
     }
     
+}
+
+/*
+ * Enum for handling sort order
+ */
+enum SortOrder
+{
+    case ascending
+    case descending
 }

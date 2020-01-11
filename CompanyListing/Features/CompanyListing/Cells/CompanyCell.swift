@@ -30,6 +30,9 @@ class CompanyCell: UITableViewCell
         btnFollow.layer.borderColor = UIColor.systemBlue.cgColor
     }
 
+    /*
+    * Configure cells
+    */
     func configureCell(company:Company)
     {
         selectedCompany = company
@@ -45,13 +48,18 @@ class CompanyCell: UITableViewCell
         btnFollow.setTitle(followTitle, for: .normal)
     }
     
-    
+    /*
+    * User clciks favourite button
+    */
     @IBAction func favClicked(_ sender: UIButton)
     {
         selectedCompany.isFavourite = !sender.isSelected
         sender.isSelected = selectedCompany.isFavourite
     }
     
+    /*
+    * User clciks on website
+    */
     @IBAction func websiteClicked(_ sender: Any)
     {
         //Added https:// to make a url a valid one
@@ -62,12 +70,18 @@ class CompanyCell: UITableViewCell
         UIApplication.shared.open(url, options: [:], completionHandler: nil)
     }
     
+    /*
+    * User clciks on follow button
+    */
     @IBAction func followingCliked(_ sender: Any)
     {
         selectedCompany.isFollowing = !selectedCompany.isFollowing
         configureCell(company: selectedCompany)
     }
     
+    /*
+    * Resets UI elements on reuse
+    */
     override func prepareForReuse()
     {
         lblCompanyName.text = nil
